@@ -5,6 +5,7 @@ import com.ceiba.libreria.component.ComponentDependency;
 import com.ceiba.libreria.entity.User;
 import com.ceiba.libreria.pojo.UserPojo;
 import com.ceiba.libreria.repository.UserRepository;
+import com.ceiba.libreria.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +15,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -32,6 +34,9 @@ public class LibreriaApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserService userService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(LibreriaApplication.class, args);
 	}
@@ -46,7 +51,8 @@ public class LibreriaApplication implements CommandLineRunner {
 		log.error("fin del procso run");
 		saveUsers();
 		//findAllUsers();
-		findUserById(Long.valueOf(1));
+		//findUserById(Long.valueOf(1));
+		saveWithError();
 	}
 
 	private void saveUsers(){
@@ -80,6 +86,19 @@ public class LibreriaApplication implements CommandLineRunner {
 		log.info("user DTO: " + userRepository.findByMailAndDate(
 				LocalDate.of(2005, 01, 01), "ma24@ailll").orElseThrow(() ->
 						new RuntimeException("Error al consultar la persona")));
+	}
+
+	private void saveWithError(){
+		User test1 = new User(1L, "TestTransactional1", "TestTransactional1@domain.com", LocalDate.now(), null);
+		User test2 = new User(2L, "TestTransactional2", "TestTransactional2@domain.com", LocalDate.now(), null);
+		User test3 = new User(3L, "TestTransactional3", "TestTransactional3@domain.com", LocalDate.now(), null);
+		User test4 = new User(1L, "TestTransactional4", "TestTransactional4@domain.com", LocalDate.now(), null);
+
+		List<User> users = Arrays.asList(test1, test2, test3, test3);
+
+		userService.saveInformation(users);
+		userService.getAllusers().stream().forEach(u ->
+				log.info("user insertado: " + u));
 	}
 
 }

@@ -37,8 +37,6 @@ public class User {
     @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
-
-
     @Override
     public String toString() {
         return "User{" +
