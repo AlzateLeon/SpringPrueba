@@ -1,5 +1,6 @@
 package com.ceiba.libreria.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,8 @@ public class User {
 
     private LocalDate birthDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
     @Override

@@ -6,13 +6,12 @@ import com.ceiba.libreria.entity.User;
 import com.ceiba.libreria.pojo.UserPojo;
 import com.ceiba.libreria.repository.UserRepository;
 import com.ceiba.libreria.service.UserService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cglib.core.Local;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,19 +21,19 @@ import java.util.List;
 @Slf4j
 public class LibreriaApplication implements CommandLineRunner {
 
-	@Autowired
+	@Resource
 	private ComponentDependency component;
 
-	@Autowired
+	@Resource
 	private MyBeanWithProperties myBeanWithProperties;
 
-	@Autowired
+	@Resource
 	private UserPojo userPojo;
 
-	@Autowired
+	@Resource
 	private UserRepository userRepository;
 
-	@Autowired
+	@Resource
 	private UserService userService;
 
 	public static void main(String[] args) {
@@ -50,19 +49,17 @@ public class LibreriaApplication implements CommandLineRunner {
 		System.out.println(userPojo.getMail() + userPojo.getPassword());
 		log.error("fin del procso run");
 		saveUsers();
-		//findAllUsers();
-		//findUserById(Long.valueOf(1));
 		saveWithError();
 	}
 
 	private void saveUsers(){
 		User user1 = new User();
-		user1.setBirthDate(LocalDate.of(2002, 01, 01));
+		user1.setBirthDate(LocalDate.of(2002, 1, 1));
 		user1.setMail("mail@ailll");
 		user1.setName("JUANA");
 
 		User user2 = new User();
-		user2.setBirthDate(LocalDate.of(2005, 01, 01));
+		user2.setBirthDate(LocalDate.of(2005, 1, 1));
 		user2.setMail("ma24@ailll");
 		user2.setName("JUANA");
 		userRepository.save(user1);
@@ -72,7 +69,8 @@ public class LibreriaApplication implements CommandLineRunner {
 	private void findUserById(Long id){
 
 		List<User> users = userRepository.findAll();
-		users.forEach(u -> System.out.println(u.toString()));
+		//users.forEach(u -> System.out.println(u.toString()));
+		users.forEach(System.out::println);
 
 		log.info("usuario encontrado: " + userRepository.findByUserId(id).orElseThrow(() ->
 				new RuntimeException("No se  encontro el usuario")));

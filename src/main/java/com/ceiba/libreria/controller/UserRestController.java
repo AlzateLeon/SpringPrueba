@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserRestController {
 
-    private GetUser getUser;
-    private CreateUser createUser;
-    private DeleteUser deleteUser;
-    private UpdateUser updateUser;
+    private final GetUser getUser;
+    private final CreateUser createUser;
+    private final DeleteUser deleteUser;
+    private final UpdateUser updateUser;
 
     public UserRestController(GetUser getUser, CreateUser createUser,
                               DeleteUser deleteUser, UpdateUser updateUser) {
@@ -39,13 +39,18 @@ public class UserRestController {
         return new ResponseEntity<>(createUser.save(user), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     ResponseEntity delete(@PathVariable Long id){
         deleteUser.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    //PathVariable -> va en la ruta (URL)
+    //RequestParam -> ? nombre = valor; en la URL
+    //RequestBody -> va en el body
 
-    @PutMapping("/id")
+    //patron repositorio -> para no usar una BD especifica
+
+    @PutMapping("/{id}")
     ResponseEntity<User> replace(@RequestBody User user, @PathVariable Long id){
         return new ResponseEntity<>(updateUser.update(user, id), HttpStatus.OK);
     }
